@@ -48,6 +48,12 @@ app.get("/blogs",(req,res)=>{
    })
    
 })
+// NEW ROUTE//
+app.get("/blogs/new",(req,res)=>{
+    res.render("new");
+})
+//CREATE ROUTE // 
+app.post("/create")
 
 
 
