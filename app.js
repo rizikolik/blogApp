@@ -37,12 +37,14 @@ const Blog=mongoose.model("Blog",blogSchema);
 app.get("/",(req,res)=>{
    res.redirect("/blogs");
 })
+
+//INDEX ROUTE    
 app.get("/blogs",(req,res)=>{
    Blog.find({},(err,blogsfinded)=>{
       if(err){
          console.log(err);
       } else {
-         res.render("index",{find:blogsfinded})
+         res.render("index",{find:blogsfinded})// IAM CALLİNG THE WANTED BLOGS AS "FİND"
       }
       
    })
@@ -53,7 +55,33 @@ app.get("/blogs/new",(req,res)=>{
     res.render("new");
 })
 //CREATE ROUTE // 
-app.post("/create")
+app.post("/blogs",(req,res)=>{
+   //create a new blog
+   Blog.create(req.body.blog,(err,CreatedBlog)=>{
+   if(err){
+     res.render("new");
+   }else{
+      //AFTER CREATE REDİRECT 
+      res.redirect("/blogs");
+   }
+   })
+   
+})
+//SHOW ROUTE
+app.get("/blogs/:id",(req,res)=>{
+   Blog.findById(req.params.id,(err,wantedBlog)=>{ //// I am calling the wanted id as : "foundeditem"//
+      if(err){
+         res.redirect("/blogs");
+      }else{
+         res.render("show",{foundeditem:wantedBlog});
+      }
+   })
+   
+})
+//EDIT ROUTE
+app.get("/blogs/:id/edit",(req,res)=>{
+   res.render("edit");
+})
 
 
 
