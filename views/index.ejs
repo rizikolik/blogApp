@@ -1,15 +1,28 @@
 <% include ./partials/header.ejs%>
 
-
 <%find.forEach(blog=>{ %>
-<div>
-    <h3><%=blog.title %></h3>
-    <img src="<%=blog.image%>">
-    <span><%=blog.created%></span>
-    <p><%=blog.body%></p>
+<div class=" ui center aligned container main segment ">
+    <div class="ui center aligned header">
+      <h3><%=blog.title %></h3>  
+    </div>
+    
+    <div class="ui centered big image">
+        <img src="<%=blog.image%>"></br>
+    </div>
+    <div class="content">
+       <span><%=blog.created.toDateString()%></span> 
+    </div>
+    <div class="description">
+       <p><%-blog.body.substring(0,100)%>...</p> 
+    </div>
+    
+    
+    
+    <a href="/blogs/<%=blog._id%>" class="ui inverted teal button">Read More</a>
 </div>
 
 <% })%>
+
 
 
 <% include ./partials/footer.ejs %>
