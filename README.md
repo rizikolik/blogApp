@@ -20,6 +20,5 @@ and req.params.id
 
 8)Method override(?_METHOD=...) because of html doesnt support the put request
 
-9)
-
+9) Express-sanitizer for code inside the user inputs
 

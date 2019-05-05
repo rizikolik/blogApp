@@ -1,28 +1,27 @@
 <% include ./partials/header.ejs%>
-
-<%find.forEach(blog=>{ %>
-<div class=" ui center aligned container main segment ">
-    <div class="ui center aligned header">
-      <h3><%=blog.title %></h3>  
-    </div>
-    
-    <div class="ui centered big image">
-        <img src="<%=blog.image%>"></br>
-    </div>
-    <div class="content">
-       <span><%=blog.created.toDateString()%></span> 
-    </div>
-    <div class="description">
-       <p><%-blog.body.substring(0,100)%>...</p> 
-    </div>
-    
-    
-    
-    <a href="/blogs/<%=blog._id%>" class="ui inverted teal button">Read More</a>
+<div class="ui main text container">    
+<div class="ui huge header">WELCOME TO MY  SMALL, WARM BLOG!</div>
 </div>
-
-<% })%>
-
-
-
+<div class=" ui top attached segment">
+    <div class="ui divided items">
+        <%find.forEach(blog=>{ %>
+          <div class=" item">
+                <div class=" ui medium image">
+                    <img src="<%=blog.image%>"></br>
+                </div>
+                <div class="content">
+                     <a class="header" href="/blogs/<%=blog._id%>"><%=blog.title %></a>
+                    <div class="meta">
+                    <span><%=blog.created.toDateString()%></span> 
+                    </div>
+                    <div class="description">
+                      <p><%-blog.body.substring(0,100)%>...</p> 
+                    </div>
+                      <a href="/blogs/<%=blog._id%>" class="ui floated inverted teal button">Read More<i class="right chevron icon"></i></a>
+                </div>
+            </div>
+        <% })%>
+       </div>
+</div>
+      
 <% include ./partials/footer.ejs %>

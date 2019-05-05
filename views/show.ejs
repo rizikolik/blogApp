@@ -13,6 +13,14 @@
          <div class="description">
              <p><%-foundeditem.body%></p>
          </div>
+         <div class="segment">
+             <form id="deleteform" method="POST" action="/blogs/<%=foundeditem._id%>?_method=DELETE">
+                 <button class="ui red basic button">DELETE</button>
+             </form>
+             <a class="ui blue button" href="/blogs/<%=foundeditem._id%>/edit">EDİT</a>
+              
+         </div>
+         
           
           
     </div>

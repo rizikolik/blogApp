@@ -1,8 +1,9 @@
-const bodyParser    =require("body-parser"),
-      methodOverride=require("method-override"),
-      mongoose      =require("mongoose"),
-      express       =require("express"),
-      app           =express();
+const bodyParser       =require("body-parser"),
+      methodOverride   =require("method-override"),
+      expressSanitizer =require("express-sanitizer"),
+      mongoose         =require("mongoose"),
+      express          =require("express"),
+      app              =express();
       
       
 
@@ -11,7 +12,9 @@ mongoose.connect("mongodb://localhost/blog_app");
 app.set("view engine","ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(expressSanitizer());/////this use must be after the body-parser!!!!!!!!!!!!
 app.use(methodOverride("_method"));
+
 
 
 //MONGOOSE/MODEL CONFİG
@@ -29,9 +32,7 @@ const blogSchema= new mongoose.Schema({
   {
      type:Date,
    default:Date.now
-     
   }
-  
 });
 const Blog=mongoose.model("Blog",blogSchema);
 
@@ -48,9 +49,7 @@ app.get("/blogs",(req,res)=>{
       } else {
          res.render("index",{find:blogsfinded})// IAM CALLİNG THE WANTED BLOGS AS "FİND"
       }
-      
    })
-   
 })
 // NEW ROUTE//
 app.get("/blogs/new",(req,res)=>{
@@ -59,6 +58,7 @@ app.get("/blogs/new",(req,res)=>{
 //CREATE ROUTE // 
 app.post("/blogs",(req,res)=>{
    //create a new blog
+   req.body.blog.body=req.sanitize(req.body.blog.body);//  for user side input codes
    Blog.create(req.body.blog,(err,CreatedBlog)=>{
    if(err){
      res.render("new");
@@ -67,7 +67,6 @@ app.post("/blogs",(req,res)=>{
       res.redirect("/blogs");
    }
    })
-   
 })
 //SHOW ROUTE
 app.get("/blogs/:id",(req,res)=>{
@@ -78,7 +77,6 @@ app.get("/blogs/:id",(req,res)=>{
          res.render("show",{foundeditem:wantedBlog});
       }
    });
-   
 });
 //EDIT ROUTE
 app.get("/blogs/:id/edit",(req,res)=>{
@@ -89,10 +87,10 @@ app.get("/blogs/:id/edit",(req,res)=>{
          res.render("edit",{foundeditem_edit:wantedtoeditBlog});
       }
    });
-   
 });
 //UPDATE ROUTE
 app.put("/blogs/:id",(req,res)=>{
+   req.body.blog.body=req.sanitize(req.body.blog.body);//  for user side input codes
    Blog.findByIdAndUpdate(req.params.id,req.body.blog,(err,updatedBlog)=>{
       if(err){
          res.redirect("/blogs");
@@ -100,10 +98,18 @@ app.put("/blogs/:id",(req,res)=>{
          res.redirect("/blogs/"+req.params.id)
       }
    })
-   
-    
-   
 })
+//DELETE ROUTE
+app.delete("/blogs/:id",(req,res)=>{
+   Blog.findByIdAndRemove(req.params.id,(err)=>{
+      if(err){
+         res.redirect("/blogs");
+      }else{
+         res.redirect("/blogs");
+      }
+   })
+  
+});
 
 
 
